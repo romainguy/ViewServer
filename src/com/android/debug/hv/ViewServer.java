@@ -187,7 +187,6 @@ public class ViewServer implements Runnable {
             return false;
         }
 
-        mServer = new ServerSocket(mPort, VIEW_SERVER_MAX_CONNECTIONS, InetAddress.getLocalHost());
         mThread = new Thread(this, "Local View Server [port=" + mPort + "]");
         mThreadPool = Executors.newFixedThreadPool(VIEW_SERVER_MAX_CONNECTIONS);
         mThread.start();
@@ -354,6 +353,12 @@ public class ViewServer implements Runnable {
      * Main server loop.
      */
     public void run() {
+    	try {
+			mServer = new ServerSocket(mPort, VIEW_SERVER_MAX_CONNECTIONS, InetAddress.getLocalHost());
+		} catch (Exception e) {
+			Log.w(LOG_TAG, "Starting ServerSocket error: ", e);
+		}
+		
         while (Thread.currentThread() == mThread) {
             // Any uncaught exception will crash the system process
             try {
