@@ -26,9 +26,10 @@ import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map.Entry;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -110,8 +111,8 @@ public class ViewServer implements Runnable {
     private Thread mThread;
     private ExecutorService mThreadPool;
     
-    private final ArrayList<WindowListener> mListeners =
-        new ArrayList<ViewServer.WindowListener>();
+    private final List<WindowListener> mListeners =
+        new CopyOnWriteArrayList<ViewServer.WindowListener>();
 
     private final HashMap<View, String> mWindows = new HashMap<View, String>();
     private final ReentrantReadWriteLock mWindowsLock = new ReentrantReadWriteLock();
@@ -814,3 +815,4 @@ public class ViewServer implements Runnable {
         }
     }
 }
+
