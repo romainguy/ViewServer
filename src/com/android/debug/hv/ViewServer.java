@@ -26,9 +26,10 @@ import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map.Entry;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -63,17 +64,17 @@ import android.view.ViewDebug;
  *     public void onCreate(Bundle savedInstanceState) {
  *         super.onCreate(savedInstanceState);
  *         // Set content view, etc.
- *         ViewServer.get().addWindow(this);
+ *         ViewServer.get(this).addWindow(this);
  *     }
  *       
  *     public void onDestroy() {
  *         super.onDestroy();
- *         ViewServer.get().removeWindow(this);
+ *         ViewServer.get(this).removeWindow(this);
  *     }
  *   
  *     public void onResume() {
  *         super.onResume();
- *         ViewServer.get().setFocusedWindow(this);
+ *         ViewServer.get(this).setFocusedWindow(this);
  *     }
  * }
  * </pre>
@@ -110,8 +111,8 @@ public class ViewServer implements Runnable {
     private Thread mThread;
     private ExecutorService mThreadPool;
     
-    private final ArrayList<WindowListener> mListeners =
-        new ArrayList<ViewServer.WindowListener>();
+    private final List<WindowListener> mListeners =
+        new CopyOnWriteArrayList<ViewServer.WindowListener>();
 
     private final HashMap<View, String> mWindows = new HashMap<View, String>();
     private final ReentrantReadWriteLock mWindowsLock = new ReentrantReadWriteLock();
@@ -187,7 +188,6 @@ public class ViewServer implements Runnable {
             return false;
         }
 
-        mServer = new ServerSocket(mPort, VIEW_SERVER_MAX_CONNECTIONS, InetAddress.getLocalHost());
         mThread = new Thread(this, "Local View Server [port=" + mPort + "]");
         mThreadPool = Executors.newFixedThreadPool(VIEW_SERVER_MAX_CONNECTIONS);
         mThread.start();
@@ -354,6 +354,12 @@ public class ViewServer implements Runnable {
      * Main server loop.
      */
     public void run() {
+    	try {
+			mServer = new ServerSocket(mPort, VIEW_SERVER_MAX_CONNECTIONS, InetAddress.getLocalHost());
+		} catch (Exception e) {
+			Log.w(LOG_TAG, "Starting ServerSocket error: ", e);
+		}
+		
         while (Thread.currentThread() == mThread) {
             // Any uncaught exception will crash the system process
             try {
@@ -809,3 +815,4 @@ public class ViewServer implements Runnable {
         }
     }
 }
+
