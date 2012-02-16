@@ -64,17 +64,17 @@ import android.view.ViewDebug;
  *     public void onCreate(Bundle savedInstanceState) {
  *         super.onCreate(savedInstanceState);
  *         // Set content view, etc.
- *         ViewServer.get().addWindow(this);
+ *         ViewServer.get(this).addWindow(this);
  *     }
  *       
  *     public void onDestroy() {
  *         super.onDestroy();
- *         ViewServer.get().removeWindow(this);
+ *         ViewServer.get(this).removeWindow(this);
  *     }
  *   
  *     public void onResume() {
  *         super.onResume();
- *         ViewServer.get().setFocusedWindow(this);
+ *         ViewServer.get(this).setFocusedWindow(this);
  *     }
  * }
  * </pre>
