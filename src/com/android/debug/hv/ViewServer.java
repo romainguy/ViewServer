@@ -80,7 +80,7 @@ import android.view.ViewDebug;
  * </pre>
  */
 public class ViewServer implements Runnable {
-	/**
+    /**
      * The default port used to start view servers.
      */
     private static final int VIEW_SERVER_DEFAULT_PORT = 4939;
@@ -133,32 +133,32 @@ public class ViewServer implements Runnable {
      * the same code in debug and release versions of your application.
      * 
      * @param context A Context used to check whether the application is
-     * 				  debuggable, this can be the application context
+     *                debuggable, this can be the application context
      */
     public static ViewServer get(Context context) {
-    	ApplicationInfo info = context.getApplicationInfo();
-		if (BUILD_TYPE_USER.equals(Build.TYPE) &&
-				(info.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0) {
-	        if (sServer == null) {
-	            sServer = new ViewServer(ViewServer.VIEW_SERVER_DEFAULT_PORT);
-	        }
-	
-	        if (!sServer.isRunning()) {
-	            try {
-	                sServer.start();
-	            } catch (IOException e) {
-	                Log.d("LocalViewServer", "Error:", e);
-	            }
-	        }
-    	} else {
-    		sServer = new NoopViewServer();
-    	}
+        ApplicationInfo info = context.getApplicationInfo();
+        if (BUILD_TYPE_USER.equals(Build.TYPE) &&
+                (info.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0) {
+            if (sServer == null) {
+                sServer = new ViewServer(ViewServer.VIEW_SERVER_DEFAULT_PORT);
+            }
+    
+            if (!sServer.isRunning()) {
+                try {
+                    sServer.start();
+                } catch (IOException e) {
+                    Log.d("LocalViewServer", "Error:", e);
+                }
+            }
+        } else {
+            sServer = new NoopViewServer();
+        }
 
         return sServer;
     }
 
     private ViewServer() {
-    	mPort = -1;
+        mPort = -1;
     }
     
     /**
@@ -267,13 +267,13 @@ public class ViewServer implements Runnable {
      * @see #removeWindow(Activity)
      */
     public void addWindow(Activity activity) {
-    	String name = activity.getTitle().toString();
-    	if (TextUtils.isEmpty(name)) {
-    		name = activity.getClass().getCanonicalName() +
-    				"/0x" + System.identityHashCode(activity);
-    	} else {
-    		name += "(" + activity.getClass().getCanonicalName() + ")";
-    	}
+        String name = activity.getTitle().toString();
+        if (TextUtils.isEmpty(name)) {
+            name = activity.getClass().getCanonicalName() +
+                    "/0x" + System.identityHashCode(activity);
+        } else {
+            name += "(" + activity.getClass().getCanonicalName() + ")";
+        }
         addWindow(activity.getWindow().getDecorView(), name);
     }
 
@@ -354,12 +354,12 @@ public class ViewServer implements Runnable {
      * Main server loop.
      */
     public void run() {
-    	try {
-			mServer = new ServerSocket(mPort, VIEW_SERVER_MAX_CONNECTIONS, InetAddress.getLocalHost());
-		} catch (Exception e) {
-			Log.w(LOG_TAG, "Starting ServerSocket error: ", e);
-		}
-		
+        try {
+            mServer = new ServerSocket(mPort, VIEW_SERVER_MAX_CONNECTIONS, InetAddress.getLocalHost());
+        } catch (Exception e) {
+            Log.w(LOG_TAG, "Starting ServerSocket error: ", e);
+        }
+
         while (Thread.currentThread() == mThread) {
             // Any uncaught exception will crash the system process
             try {
@@ -472,52 +472,52 @@ public class ViewServer implements Runnable {
     }
 
     private static class NoopViewServer extends ViewServer {
-    	private NoopViewServer() {
-    	}
+        private NoopViewServer() {
+        }
 
-		@Override
-		public boolean start() throws IOException {
-			return false;
-		}
+        @Override
+        public boolean start() throws IOException {
+            return false;
+        }
 
-		@Override
-		public boolean stop() {
-			return false;
-		}
+        @Override
+        public boolean stop() {
+            return false;
+        }
 
-		@Override
-		public boolean isRunning() {
-			return false;
-		}
+        @Override
+        public boolean isRunning() {
+            return false;
+        }
 
-		@Override
-		public void addWindow(Activity activity) {
-		}
+        @Override
+        public void addWindow(Activity activity) {
+        }
 
-		@Override
-		public void removeWindow(Activity activity) {
-		}
+        @Override
+        public void removeWindow(Activity activity) {
+        }
 
-		@Override
-		public void addWindow(View view, String name) {
-		}
+        @Override
+        public void addWindow(View view, String name) {
+        }
 
-		@Override
-		public void removeWindow(View view) {
-		}
+        @Override
+        public void removeWindow(View view) {
+        }
 
-		@Override
-		public void setFocusedWindow(Activity activity) {
-		}
+        @Override
+        public void setFocusedWindow(Activity activity) {
+        }
 
-		@Override
-		public void setFocusedWindow(View view) {
-		}
+        @Override
+        public void setFocusedWindow(View view) {
+        }
 
-		@Override
-		public void run() {
-		}
-	}
+        @Override
+        public void run() {
+        }
+    }
 
     private class ViewServerWorker implements Runnable, WindowListener {
         private Socket mClient;
@@ -815,4 +815,3 @@ public class ViewServer implements Runnable {
         }
     }
 }
-
