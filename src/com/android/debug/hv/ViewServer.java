@@ -78,6 +78,33 @@ import android.view.ViewDebug;
  *     }
  * }
  * </pre>
+ * 
+ * <p>
+ * In a similar fashion, you can use this API with an InputMethodService:
+ * </p>
+ * 
+ * <pre>
+ * public class MyInputMethodService extends InputMethodService {
+ *     public void onCreate() {
+ *         super.onCreate();
+ *         View decorView = getWindow().getWindow().getDecorView();
+ *         String name = "MyInputMethodService";
+ *         ViewServer.get(this).addWindow(decorView, name);
+ *     }
+ *
+ *     public void onDestroy() {
+ *         super.onDestroy();
+ *         View decorView = getWindow().getWindow().getDecorView();
+ *         ViewServer.get(this).removeWindow(decorView);
+ *     }
+ *
+ *     public void onStartInput(EditorInfo attribute, boolean restarting) {
+ *         super.onStartInput(attribute, restarting);
+ *         View decorView = getWindow().getWindow().getDecorView();
+ *         ViewServer.get(this).setFocusedWindow(decorView);
+ *     }
+ * }
+ * </pre>
  */
 public class ViewServer implements Runnable {
     /**
