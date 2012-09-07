@@ -88,7 +88,7 @@ public class ViewServer implements Runnable {
     private static final String BUILD_TYPE_USER = "user";
 
     // Debug facility
-    private static final String LOG_TAG = "LocalViewServer";
+    private static final String LOG_TAG = "ViewServer";
 
     private static final String VALUE_PROTOCOL_VERSION = "4";
     private static final String VALUE_SERVER_VERSION = "4";
@@ -147,7 +147,7 @@ public class ViewServer implements Runnable {
                 try {
                     sServer.start();
                 } catch (IOException e) {
-                    Log.d("LocalViewServer", "Error:", e);
+                    Log.d(LOG_TAG, "Error:", e);
                 }
             }
         } else {
@@ -360,7 +360,7 @@ public class ViewServer implements Runnable {
             Log.w(LOG_TAG, "Starting ServerSocket error: ", e);
         }
 
-        while (Thread.currentThread() == mThread) {
+        while (mServer != null && Thread.currentThread() == mThread) {
             // Any uncaught exception will crash the system process
             try {
                 Socket client = mServer.accept();
