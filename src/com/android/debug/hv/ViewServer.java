@@ -36,7 +36,6 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.pm.ApplicationInfo;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
@@ -163,9 +162,7 @@ public class ViewServer implements Runnable {
      *                debuggable, this can be the application context
      */
     public static ViewServer get(Context context) {
-        ApplicationInfo info = context.getApplicationInfo();
-        if (BUILD_TYPE_USER.equals(Build.TYPE) &&
-                (info.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0) {
+        if (BUILD_TYPE_USER.equals(Build.TYPE) && BuildConfig.DEBUG) {
             if (sServer == null) {
                 sServer = new ViewServer(ViewServer.VIEW_SERVER_DEFAULT_PORT);
             }
