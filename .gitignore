@@ -1,6 +1,11 @@
+# Android Studio
+.idea
+*.iml
 
-bin/
-gen/
+# Gradle
+.gradle
+build
+local.properties
 
-
-.settings/org.eclipse.jdt.core.prefs
+# OS X
+.DS_Store
