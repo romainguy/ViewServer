@@ -299,7 +299,7 @@ public class ViewServer implements Runnable {
             name = activity.getClass().getCanonicalName() +
                     "/0x" + System.identityHashCode(activity);
         } else {
-            name += "(" + activity.getClass().getCanonicalName() + ")";
+            name += " (" + activity.getClass().getCanonicalName() + ")";
         }
         addWindow(activity.getWindow().getDecorView(), name);
     }
