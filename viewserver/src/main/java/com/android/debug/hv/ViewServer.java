@@ -457,10 +457,10 @@ public class ViewServer implements Runnable {
         void focusChanged();
     }
     
-    private static class UncloseableOuputStream extends OutputStream {
+    private static class UncloseableOutputStream extends OutputStream {
         private final OutputStream mStream;
 
-        UncloseableOuputStream(OutputStream stream) {
+        UncloseableOutputStream(OutputStream stream) {
             mStream = stream;
         }
 
@@ -647,7 +647,7 @@ public class ViewServer implements Runnable {
                         View.class, String.class, String.class, OutputStream.class);
                 dispatch.setAccessible(true);
                 dispatch.invoke(null, window, command, parameters,
-                        new UncloseableOuputStream(client.getOutputStream()));
+                        new UncloseableOutputStream(client.getOutputStream()));
 
                 if (!client.isOutputShutdown()) {
                     out = new BufferedWriter(new OutputStreamWriter(client.getOutputStream()));
