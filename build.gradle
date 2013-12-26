@@ -3,29 +3,36 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.5.+'
+        classpath 'com.android.tools.build:gradle:0.7.+'
     }
 }
 
 apply plugin: 'android-library'
-
-repositories {
-    mavenCentral()
-}
+apply plugin: 'maven'
 
 android {
-    compileSdkVersion 17
-    buildToolsVersion = '18.1'
+  compileSdkVersion 17
+  buildToolsVersion '19'
 
-    sourceSets {
-        main {
-            assets.srcDirs       = ['assets']
-            res.srcDirs          = ['res']
-            aidl.srcDirs         = ['src']
-            resources.srcDirs    = ['src']
-            renderscript.srcDirs = ['src']
-            java.srcDirs         = ['src']
-            manifest.srcFile 'AndroidManifest.xml'
+  sourceSets {
+    main {
+      manifest.srcFile 'AndroidManifest.xml'
+      java.srcDirs = ['src']
+      res.srcDirs = ['res']
+    }
+  }
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: project.deploymentUrl) {
+               authentication(userName: project.deploymentUsername, password: project.deploymentPassword)
+            }
+
+            pom.artifactId = 'viewserver'
+            pom.groupId = 'com.android.debug.hv'
+            pom.version = '1.0'
         }
     }
 }
