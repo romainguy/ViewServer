@@ -2,3 +2,4 @@ build/
 bin/
 gen/
 .settings/org.eclipse.jdt.core.prefs
+/.apt_generated
