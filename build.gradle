@@ -3,16 +3,23 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.7.+'
+        classpath 'com.android.tools.build:gradle:0.12.+'
     }
 }
 
-apply plugin: 'android-library'
+apply plugin: 'com.android.library'
 apply plugin: 'maven'
+
+// set project wide properties and if not available apply defaults
+if (new File('onefootball.properties.gradle').exists()) {
+    apply from: 'onefootball.properties.gradle';
+} else {
+    throw new GradleException('### Mandatory properties file is missing! ###\nPlease check if "onefootball.properties.gradle" and "onefootball.signing.keystore" are in your project root folder. If not you could find them on the project wiki page.')
+}
 
 android {
   compileSdkVersion 17
-  buildToolsVersion '19'
+  buildToolsVersion '21.0.2'
 
   sourceSets {
     main {
@@ -29,10 +36,12 @@ uploadArchives {
             repository(url: project.deploymentUrl) {
                authentication(userName: project.deploymentUsername, password: project.deploymentPassword)
             }
-
-            pom.artifactId = 'viewserver'
-            pom.groupId = 'com.android.debug.hv'
-            pom.version = '1.0'
+            
+            pom.project {
+            	groupId 'com.onefootball.android'
+            	artifactId 'viewserver'
+            	version '1.0'
+        	}
         }
     }
 }
