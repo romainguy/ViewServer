@@ -1,12 +1,10 @@
-buildscript {
-  dependencies {
-    classpath 'com.android.tools.build:gradle:0.9.+'
-  }
-}
-
-apply plugin: 'android-library'
+apply plugin: 'com.android.library'
 
 android {
-  compileSdkVersion 19
-  buildToolsVersion '19.0.3'
+    compileSdkVersion 21
+    buildToolsVersion "21.1.1"
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
 }
