@@ -342,11 +342,21 @@ public class ViewServer implements Runnable {
      * @see #addWindow(View, String)
      */
     public void removeWindow(View view) {
+        View rootView;
         mWindowsLock.writeLock().lock();
         try {
-            mWindows.remove(view.getRootView());
+            rootView = view.getRootView();
+            mWindows.remove(rootView);
         } finally {
             mWindowsLock.writeLock().unlock();
+        }
+        mFocusLock.writeLock().lock();
+        try {
+            if (mFocusedWindow == rootView) {
+                mFocusedWindow = null;
+            }
+        } finally {
+            mFocusLock.writeLock().unlock();
         }
         fireWindowsChangedEvent();
     }
