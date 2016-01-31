@@ -4,7 +4,8 @@ to use the HierarchyViewer inspection tool.
 ViewServer requires the Android SDK r12 or higher.
 http://developer.android.com/sdk/index.html
 
-# Quick Start
+Quick Start
+-----
  * Verify that you need this library([newer versions of Android don't][setup])
  
 If you do need this library then follow these directions:
