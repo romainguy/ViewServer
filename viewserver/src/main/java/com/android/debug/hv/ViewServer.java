@@ -294,7 +294,7 @@ public class ViewServer implements Runnable {
      * @see #removeWindow(Activity)
      */
     public void addWindow(Activity activity) {
-        String name = activity.getTitle().toString();
+        String name = null == activity.getTitle() ? "" : activity.getTitle().toString();
         if (TextUtils.isEmpty(name)) {
             name = activity.getClass().getCanonicalName() +
                     "/0x" + System.identityHashCode(activity);
