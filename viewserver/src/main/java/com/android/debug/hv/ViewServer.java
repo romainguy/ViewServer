@@ -16,6 +16,16 @@
 
 package com.android.debug.hv;
 
+import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.os.Build;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewDebug;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -33,15 +43,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-
-import android.app.Activity;
-import android.content.Context;
-import android.content.pm.ApplicationInfo;
-import android.os.Build;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.view.ViewDebug;
 
 /**
  * <p>This class can be used to enable the use of HierarchyViewer inside an
@@ -304,6 +305,17 @@ public class ViewServer implements Runnable {
         addWindow(activity.getWindow().getDecorView(), name);
     }
 
+    public void addWindow(Dialog dialog) {
+        String name = dialog.toString();
+        if (TextUtils.isEmpty(name)) {
+            name = dialog.getClass().getCanonicalName() +
+                    "/0x" + System.identityHashCode(dialog);
+        } else {
+            name += "(" + dialog.getClass().getCanonicalName() + ")";
+        }
+        addWindow(dialog.getWindow().getDecorView(), name);
+    }
+
     /**
      * Invoke this method to unregister a view hierarchy.
      * 
@@ -342,6 +354,8 @@ public class ViewServer implements Runnable {
      * @see #addWindow(View, String)
      */
     public void removeWindow(View view) {
+        if(view == null)
+            return;
         View rootView;
         mWindowsLock.writeLock().lock();
         try {
