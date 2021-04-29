@@ -1,3 +1,7 @@
+**NOTE**: This library is not necessary anymore. Newer versions of
+Android provide a new tool called Layout Inspector that should be
+used instead.
+
 ViewServer is a simple class you can use in your Android application
 to use the HierarchyViewer inspection tool.
 
